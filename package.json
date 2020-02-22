@@ -1,0 +1,19 @@
+{
+  "name": "online_store_api",
+  "version": "1.0.0",
+  "description": "A restApi",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cmcWebCode40/Online_Store_Api.git"
+  },
+  "author": "cmcWebCode",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cmcWebCode40/Online_Store_Api/issues"
+  },
+  "homepage": "https://github.com/cmcWebCode40/Online_Store_Api#readme"
+}
