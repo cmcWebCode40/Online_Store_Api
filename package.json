@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/cmcWebCode40/Online_Store_Api#readme",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "moongoose": "0.0.5",
     "nodemon": "^2.0.2"
   }
 }
