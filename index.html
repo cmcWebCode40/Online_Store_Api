@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rest APi</title>
+</head>
+<body>
+  <div>
+    <h1>Hello World!</h1>
+  </div>
+  <script>
+    const getData = async () => {
+      try {
+        const api = await fetch('http://localhost:4000/news');
+        const data = await api.json();
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getData();
+  </script>
+</body>
+</html>
