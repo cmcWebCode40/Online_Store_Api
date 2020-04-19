@@ -1,28 +1,19 @@
-const express = require("express");
-const moongoose = require("moongoose");
+const express = require('express');
 
 const app = express();
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
-// //Middlewares
-// app.use("/posts", () => {
-//   console.log("this a middleawre");
-// });
+app.use(bodyParser.json());
+const bagsRoute = require('./routes/bagposts');
+const shoesRoute = require('./routes/shoesposts');
 
-// Routes
-app.get("/", (req, res) => {
-    res.send("welcome");
+app.use('/bags', bagsRoute);
+app.use('/shoes', shoesRoute);
+app.get('/', (req, res) => {
+  res.send('welcome');
 });
 
-app.get("/posts", (req, res) => {
-    res.send("welcome to post page");
-});
+mongoose.connect('mongodb://localhost:27017/newsportal', { useNewUrlParser: true, useUnifiedTopology: true });
 
-
-// connect to DB
-moongoose.connect('mongodb+srv://cmcwebcode:cmcWebCode7@cluster0-kactq.mongodb.net/test', () => {
-        console.log("connected to db")
-    })
-    // console.log("hello");
-
-// How to we start listening to the sevrer
-app.listen(3000);
+app.listen(4000);
