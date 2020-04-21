@@ -5,3 +5,12 @@ cloudinary.config({
   api_key: process.env.API_KEY,
   api_secret: process.env.API_SECRET,
 });
+
+exports.uploads = (file) => {
+  const resourceFile = new Promise((resolve) => {
+    cloudinary.uploader.uploads(file, (result) => {
+      resolve({ url: result.url, id: result.public_id });
+    }, { resource_type: 'auto' });
+  });
+  return resourceFile;
+};
