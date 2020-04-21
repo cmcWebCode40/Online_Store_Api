@@ -1,5 +1,9 @@
 const express = require('express');
 const BagsPosts = require('../models/Bags');
+const bagsImageController = require('./controllers/bagsImage');
+const upload = require('./config/multerConfig');
+const cloud = require('./config/cloudinaryConfig');
+// const verify = require('./verifyToken');
 
 const router = express();
 
@@ -11,11 +15,13 @@ router.get('/', async (req, res) => {
     res.json({ message: error });
   }
 });
-router.post('/', async (req, res) => {
+router.post('/', upload.any(), async (req, res) => {
+  BagsPosts.find({ imageName: req.body.imageName });
   const post = new BagsPosts({
     title: req.body.title,
     description: req.body.description,
     price: req.body.price,
+    bagsImageController,
   });
   try {
     const postToSave = await post.save();

@@ -13,6 +13,14 @@ const BagsSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  imageName: {
+    type: String,
+    required: true,
+  },
+  cloudImage: {
+    type: String,
+    required: true,
+  },
   date: {
     type: Date,
     default: Date.now,
