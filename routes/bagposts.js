@@ -1,9 +1,17 @@
 const express = require('express');
+const cloudinary = require('cloudinary').v2;
 const BagsPosts = require('../models/Bags');
-const bagsImageController = require('./controllers/bagsImage');
-const upload = require('./config/multerConfig');
-const cloud = require('./config/cloudinaryConfig');
+
+// const bagsImageController = require('./controllers/bagsImage');
+// const upload = require('./config/multerConfig');
+// const cloud = require('./config/cloudinaryConfig');
 // const verify = require('./verifyToken');
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+});
 
 const router = express();
 
@@ -15,19 +23,19 @@ router.get('/', async (req, res) => {
     res.json({ message: error });
   }
 });
-router.post('/', upload.any(), async (req, res) => {
-  BagsPosts.find({ imageName: req.body.imageName });
-  const post = new BagsPosts({
-    title: req.body.title,
-    description: req.body.description,
-    price: req.body.price,
-    bagsImageController,
-  });
+router.post('/bags-uploads', async (req, res) => {
   try {
-    const postToSave = await post.save();
+    const post = await cloudinary.uploader.upload(req.body.image);
+    const data = new BagsPosts({
+      title: req.body.title,
+      description: req.body.description,
+      price: req.body.price,
+      image: post.secure_url,
+    });
+    const postToSave = await data.save();
     res.json(postToSave);
   } catch (error) {
-    res.json({ message: error });
+    res.json({ message: error }).status(400);
   }
 });
 router.get('/:postID', async (req, res) => {

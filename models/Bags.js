@@ -13,11 +13,7 @@ const BagsSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  imageName: {
-    type: String,
-    required: true,
-  },
-  cloudImage: {
+  image: {
     type: String,
     required: true,
   },
@@ -27,4 +23,4 @@ const BagsSchema = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('BagShowCase', BagsSchema);
+module.exports = mongoose.model('bagshowcases', BagsSchema);

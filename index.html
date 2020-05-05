@@ -10,16 +10,48 @@
 <body>
   <div>
     <h1>Hello World!</h1>
+    <form>
+      <input type="file" name="bags" data-bag-image multiple>
+    </form>
+    <button data-post>send</button>
   </div>
   <script>
-    const getData = async () => {
+    const imageFile = document.querySelector('[data-bag-image]');
+    const send = document.querySelector('[data-post]');
+    imageFile.addEventListener('change', (e) => {
+      console.log(e.target.files[0]);
+    });
+    send.addEventListener('click', (e) => {
+      e.preventDefault();
+      getData();
+      fetchData();
+    });
+    function getData() {
+      // const formData = new FormData();
+      // formData.append('title', "ajckjakcasc");
+      // formData.append('description', "new product");
+      // formData.append('price', "300");
+      // formData.append('image', imageFile.files);
+      fetch('http://localhost:4001/bags/bags-uploads', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        // body: formData,
+        body: JSON.stringify({
+          title: "llmcskdjc",
+          description: "my goods is coming soon",
+          price: "$7000",
+          // image: imageFile.files[0]
+          // formData
+        }),
+      }).then(res =>res.json()).then(data => {
+        console.log(data);
+      }).catch(err => console.log(err));
+    }
+    async function fetchData() {
       try {
         const api = await fetch('http://localhost:4001/bags', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTlkZjMwMGU0ZWZmOTI3NGMzZTU1YmQiLCJpYXQiOjE1ODc0MTQyMTR9._Mrz3HtWRPt0i2gr7tB_myzISc-48ccfbvx5k9QOysc'
-          }
         });
         const data = await api.json();
         console.log(data);
@@ -27,7 +59,6 @@
         console.log(error);
       }
     }
-    getData();
   </script>
 </body>
 
