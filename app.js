@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
   res.send('WELCOME TO LA MORE COLLECTIONZ');
 });
 
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb+srv://mike_123:chi2000@cluster0-ksjh1.mongodb.net/test?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
 
 const port = process.env.PORT || 3000;
 app.listen(port);
