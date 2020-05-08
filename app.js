@@ -6,7 +6,6 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const cors = require('cors');
 
-module.exports = app;
 app.use(cors());
 dotenv.config();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -20,10 +19,11 @@ app.use('/bags', bagsRoute);
 app.use('/shoes', shoesRoute);
 app.use('/user', authRoutes);
 app.get('/', (req, res) => {
-  res.send('welcome');
+  res.send('WELCOME TO LA MORE COLLECTIONZ');
 });
-
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
-app.listen(4001);
+const port = process.env.PORT || 3000;
+app.listen(port);
+module.exports = app;
