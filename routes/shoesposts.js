@@ -1,6 +1,7 @@
 const express = require('express');
 const cloudinary = require('cloudinary').v2;
 const ShoesPost = require('../models/shoes');
+const verify = require('./verifyToken');
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -18,7 +19,7 @@ router.get('/', async (req, res) => {
     res.json({ message: error });
   }
 });
-router.post('/shoes-uploads', async (req, res) => {
+router.post('/shoes-uploads', verify, async (req, res) => {
   try {
     const post = await cloudinary.uploader.upload(req.body.image);
     const data = new ShoesPost({
@@ -33,7 +34,7 @@ router.post('/shoes-uploads', async (req, res) => {
     res.json({ message: error }).status(400);
   }
 });
-router.get('/:postID', async (req, res) => {
+router.get('/:postID', verify, async (req, res) => {
   try {
     const post = await ShoesPost.findById(req.params.postID);
     res.json(post);
@@ -41,7 +42,7 @@ router.get('/:postID', async (req, res) => {
     res.json({ message: error });
   }
 });
-router.delete('/:postID', async (req, res) => {
+router.delete('/:postID', verify, async (req, res) => {
   try {
     const removePost = await ShoesPost.remove({ _id: req.params.postID });
     res.json(removePost);
@@ -49,7 +50,7 @@ router.delete('/:postID', async (req, res) => {
     res.json({ message: error });
   }
 });
-router.patch('/:postID', async (req, res) => {
+router.patch('/:postID', verify, async (req, res) => {
   try {
     const editPost = await ShoesPost.updateOne(
       { _id: req.params.postID },

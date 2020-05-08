@@ -1,11 +1,7 @@
 const express = require('express');
 const cloudinary = require('cloudinary').v2;
 const BagsPosts = require('../models/Bags');
-
-// const bagsImageController = require('./controllers/bagsImage');
-// const upload = require('./config/multerConfig');
-// const cloud = require('./config/cloudinaryConfig');
-// const verify = require('./verifyToken');
+const verify = require('./verifyToken');
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -23,7 +19,7 @@ router.get('/', async (req, res) => {
     res.json({ message: error });
   }
 });
-router.post('/bags-uploads', async (req, res) => {
+router.post('/bags-uploads', verify, async (req, res) => {
   try {
     const post = await cloudinary.uploader.upload(req.body.image);
     const data = new BagsPosts({

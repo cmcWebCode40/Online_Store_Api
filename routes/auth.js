@@ -1,12 +1,13 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+require('dotenv');
 const User = require('../models/User');
-// require('dotenv');
+
+
 const { loginValidation, registerValidation } = require('../validate');
 
 const router = express();
-
 
 router.get('/allusers', async (req, res) => {
   try {
@@ -47,4 +48,5 @@ router.post('/login', async (req, res) => {
   res.header('auth-token', token).send(token);
   return res.send('Login successful');
 });
+
 module.exports = router;
