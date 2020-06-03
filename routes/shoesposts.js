@@ -1,13 +1,6 @@
 const express = require('express');
-const cloudinary = require('cloudinary').v2;
 const ShoesPost = require('../models/shoes');
 const verify = require('./verifyToken');
-
-cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_KEY,
-  api_secret: process.env.API_SECRET,
-});
 
 const router = express();
 
@@ -21,12 +14,11 @@ router.get('/', async (req, res) => {
 });
 router.post('/shoes-uploads', verify, async (req, res) => {
   try {
-    const post = await cloudinary.uploader.upload(req.body.image);
     const data = new ShoesPost({
       title: req.body.title,
       description: req.body.description,
       price: req.body.price,
-      image: post.secure_url,
+      image: req.body.image,
     });
     const postToSave = await data.save();
     res.json(postToSave);
@@ -50,11 +42,25 @@ router.delete('/:postID', verify, async (req, res) => {
     res.json({ message: error });
   }
 });
+
+
 router.patch('/:postID', verify, async (req, res) => {
   try {
     const editPost = await ShoesPost.updateOne(
       { _id: req.params.postID },
-      { $set: { title: req.body.title } },
+      { $set: { title: req.body.title, description: req.body.description, price: req.body.price } },
+    );
+    res.json(editPost);
+  } catch (error) {
+    res.json({ message: error });
+  }
+});
+
+router.patch('/image/:postID', verify, async (req, res) => {
+  try {
+    const editPost = await ShoesPost.updateOne(
+      { _id: req.params.postID },
+      { $set: { image: req.body.image } },
     );
     res.json(editPost);
   } catch (error) {

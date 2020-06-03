@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const cors = require('cors');
+// const cors = require('cors');
 require('dotenv');
 const User = require('../models/User');
 
@@ -21,7 +21,7 @@ router.get('/allusers', async (req, res) => {
 });
 
 // router.use();
-router.post('/register', cors(), async (req, res) => {
+router.post('/register', async (req, res) => {
   const { error } = registerValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
   const checkEmailExit = await User.findOne({ email: req.body.email });
@@ -35,12 +35,13 @@ router.post('/register', cors(), async (req, res) => {
   });
   try {
     await user.save();
-    res.send({ message: 'registration successful' });
+    res.status(200);
   } catch (err) {
     res.status(400).send({ message: err });
   }
   return res.send('registration successful');
 });
+
 router.post('/login', async (req, res) => {
   const { error } = loginValidation(req.body);
   if (error) res.status(400).send({ error: error.details[0].message });
@@ -48,7 +49,7 @@ router.post('/login', async (req, res) => {
   if (!userValidation) return res.status(400).send('Email does not exit');
   const userPassword = await bcrypt.compare(req.body.password, userValidation.password);
   if (!userPassword) return res.status(400).send('invalid password');
-  const token = jwt.sign({ _id: userValidation.id }, 'process.env.TOKEN_SECRET');
+  const token = jwt.sign({ _id: userValidation.id }, 'token');
   return res.header('auth-token', token).send(token);
 });
 
